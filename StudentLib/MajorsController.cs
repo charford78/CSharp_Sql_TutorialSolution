@@ -38,5 +38,39 @@ namespace EdDbLib
             sqlConn.Close();
             return majors;
         }        
+
+        public Major? GetByPk(int id)
+        {
+            var connStr = "server=localhost\\sqlexpress;database=EdDb;trusted_connection=true;";
+            var sqlConn = new SqlConnection(connStr);
+            sqlConn.Open();
+            if(sqlConn.State != System.Data.ConnectionState.Open)
+            {
+                throw new Exception("Connection failed to open!");
+            }
+
+            var sql = $"Select * from Major where Id = {id};";
+            var cmd = new SqlCommand(sql, sqlConn);
+            var reader = cmd.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                reader.Close();
+                sqlConn.Close();
+                return null;
+            }
+            reader.Read();
+            var major = new Major()
+            {
+                Id = Convert.ToInt32(reader["Id"]),
+                Code = reader["Code"].ToString(),
+                Description = reader["Description"].ToString(),
+                MinSAT = Convert.ToInt32(reader["MinSAT"])
+            };
+            
+            reader.Close();
+            sqlConn.Close();
+            return major;
+        }
     }
 }

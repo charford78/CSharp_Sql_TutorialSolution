@@ -10,10 +10,17 @@ namespace CSharp_Sql_Tutorial
         static void Main(string[] args)
         {
             var majorsCtrl = new MajorsController();
+
+            var major = majorsCtrl.GetByPk(1);
+            Console.WriteLine(major);
+            major = majorsCtrl.GetByPk(11111);
+            Console.WriteLine(major);
+
+
             var majors = majorsCtrl.GetAll();
-            foreach(var major in majors)
+            foreach(var maj in majors)
             {
-                Console.WriteLine(major);
+                Console.WriteLine(maj);
             }
         }
         static void X() {
