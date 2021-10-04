@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSharp_Sql_Tutorial
 {
-    class Student
+    public class Student
     {
         public int Id { get; set; }
         public string Firstname { get; set; }

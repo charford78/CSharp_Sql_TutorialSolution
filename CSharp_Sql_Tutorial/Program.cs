@@ -9,6 +9,8 @@ namespace CSharp_Sql_Tutorial
     {
         static void Main(string[] args)
         {
+        }
+        static void X() { 
             var connStr = "server=localhost\\sqlexpress;database=EdDb;" +
                 "trusted_connection=true;";
             var sqlConn = new SqlConnection(connStr);
