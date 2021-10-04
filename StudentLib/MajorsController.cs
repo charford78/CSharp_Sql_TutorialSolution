@@ -9,16 +9,24 @@ namespace EdDbLib
 {
     public class MajorsController
     {
+        private SqlConnection sqlConn { get; set; }
+        
+        public MajorsController(Connection connection)
+        {
+            sqlConn = connection.SqlConnection;
+        }
+        
+        public int Create(Major major)
+        {
+            var sql = " INSERT Major (Code, Description, MinSAT)" +
+                    $" VALUES ('{major.Code}', '{major.Description}', {major.MinSAT});";
+            var cmd = new SqlCommand(sql, sqlConn);
+            var rowsAffected = cmd.ExecuteNonQuery();
+            return rowsAffected;
+        }
+        
         public List<Major> GetAll()
         {
-            var connStr = "server=localhost\\sqlexpress;database=EdDb;trusted_connection=true;";
-            var sqlConn = new SqlConnection(connStr);
-            sqlConn.Open();
-            if (sqlConn.State != System.Data.ConnectionState.Open)
-            {
-                throw new Exception("Connection failed to open!");
-            }
-            // connection opened fine!
             var majors = new List<Major>();
             var sql = "Select * from Major;";
             var cmd = new SqlCommand(sql, sqlConn);
@@ -35,20 +43,12 @@ namespace EdDbLib
                 majors.Add(major);
             }
             reader.Close();
-            sqlConn.Close();
             return majors;
         }        
 
         public Major? GetByPk(int id)
         {
-            var connStr = "server=localhost\\sqlexpress;database=EdDb;trusted_connection=true;";
-            var sqlConn = new SqlConnection(connStr);
-            sqlConn.Open();
-            if(sqlConn.State != System.Data.ConnectionState.Open)
-            {
-                throw new Exception("Connection failed to open!");
-            }
-
+            
             var sql = $"Select * from Major where Id = {id};";
             var cmd = new SqlCommand(sql, sqlConn);
             var reader = cmd.ExecuteReader();
@@ -56,7 +56,6 @@ namespace EdDbLib
             if (!reader.HasRows)
             {
                 reader.Close();
-                sqlConn.Close();
                 return null;
             }
             reader.Read();
@@ -69,7 +68,6 @@ namespace EdDbLib
             };
             
             reader.Close();
-            sqlConn.Close();
             return major;
         }
     }
