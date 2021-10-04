@@ -9,8 +9,14 @@ namespace CSharp_Sql_Tutorial
     {
         static void Main(string[] args)
         {
+            var majorsCtrl = new MajorsController();
+            var majors = majorsCtrl.GetAll();
+            foreach(var major in majors)
+            {
+                Console.WriteLine(major);
+            }
         }
-        static void X() { 
+        static void X() {
             var connStr = "server=localhost\\sqlexpress;database=EdDb;" +
                 "trusted_connection=true;";
             var sqlConn = new SqlConnection(connStr);
