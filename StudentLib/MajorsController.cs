@@ -16,6 +16,16 @@ namespace EdDbLib
             sqlConn = connection.SqlConnection;
         }
         
+        public int Change(Major major)
+        {
+            var sql = " UPDATE Major " +
+                        $" SET {major.Column} = 1010 " +
+                        $" where Code = '{major.Code}'; ";
+            var cmd = new SqlCommand(sql, sqlConn);
+            var rowsAffected = cmd.ExecuteNonQuery();
+            return rowsAffected;
+        }
+        
         public int Create(Major major)
         {
             var sql = " INSERT Major (Code, Description, MinSAT)" +

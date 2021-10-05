@@ -8,6 +8,7 @@ namespace EdDbLib
 {
     public class Major
     {
+        public string Column { get; set; }
         public int Id { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }

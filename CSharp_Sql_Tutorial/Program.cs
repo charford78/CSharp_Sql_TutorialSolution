@@ -15,18 +15,30 @@ namespace CSharp_Sql_Tutorial
 
             var majorsCtrl = new MajorsController(connection);
 
-            var newMajor = new Major()
+            var updatedMajor = new Major()
             {
-                Id = 0,
-                Code = "UWBW",
-                Description = "Basket Weaving - Underwater",
-                MinSAT = 1590
+                Column = "MinSat",
+                Code = "UWBW"
             };
-            var rowsAffected = majorsCtrl.Create(newMajor);
-            if(rowsAffected != 1)
+            var rowsUpdated = majorsCtrl.Change(updatedMajor);
+            if (rowsUpdated != 1)
             {
-                Console.WriteLine("Create failed!");
+                Console.WriteLine("Update failed!");
             }
+            Console.WriteLine($"{majorsCtrl.Change(updatedMajor)} row updated!");
+
+            //var newMajor = new Major()
+            //{
+            //    Id = 0,
+            //    Code = "UWBW",
+            //    Description = "Basket Weaving - Underwater",
+            //    MinSAT = 1590
+            //};
+            //var rowsAffected = majorsCtrl.Create(newMajor);
+            //if(rowsAffected != 1)
+            //{
+            //    Console.WriteLine("Create failed!");
+            //}
 
             var major = majorsCtrl.GetByPk(1);
             Console.WriteLine(major);
