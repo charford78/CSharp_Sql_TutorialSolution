@@ -16,12 +16,32 @@ namespace EdDbLib
             sqlConn = connection.SqlConnection;
         }
         
+        public int Remove(int Id)
+        {
+            var major = GetByPk(Id);
+            if(major == null)
+            {
+                throw new Exception("Major row not found!");
+            }
+            var sql = " DELETE from Major " +
+                        $" where Id = {Id}; ";
+            var cmd = new SqlCommand(sql, sqlConn);
+            var rowsAffected = cmd.ExecuteNonQuery();
+            return rowsAffected;
+        }
+        
         public int Change(Major major)
         {
-            var sql = " UPDATE Major " +
-                        $" SET {major.Column} = 1010 " +
-                        $" where Code = '{major.Code}'; ";
+            var sql = " UPDATE Major Set" +
+                        " Code = @Code, " +
+                        " Description = @Description, " +
+                        " MinSAT = @MinSAT " +
+                        " where Id = @Id; ";
             var cmd = new SqlCommand(sql, sqlConn);
+            cmd.Parameters.AddWithValue("@Code", major.Code);
+            cmd.Parameters.AddWithValue("@Description", major.Description); 
+            cmd.Parameters.AddWithValue("@MinSAT", major.MinSAT); 
+            cmd.Parameters.AddWithValue("@Id", major.Id);
             var rowsAffected = cmd.ExecuteNonQuery();
             return rowsAffected;
         }
@@ -56,11 +76,12 @@ namespace EdDbLib
             return majors;
         }        
 
-        public Major? GetByPk(int id)
+        public Major GetByPk(int id)
         {
             
-            var sql = $"Select * from Major where Id = {id};";
+            var sql = $"Select * from Major where Id = @Id;";
             var cmd = new SqlCommand(sql, sqlConn);
+            cmd.Parameters.AddWithValue("@Id", id);
             var reader = cmd.ExecuteReader();
 
             if (!reader.HasRows)

@@ -12,20 +12,21 @@ namespace CSharp_Sql_Tutorial
             var connectionstring = "server=localhost\\sqlexpress;database=EdDb;trusted_connection=true;";
             var connection = new Connection(connectionstring);
             connection.Open();
-
+            
             var majorsCtrl = new MajorsController(connection);
 
-            var updatedMajor = new Major()
-            {
-                Column = "MinSat",
-                Code = "UWBW"
-            };
-            var rowsUpdated = majorsCtrl.Change(updatedMajor);
-            if (rowsUpdated != 1)
-            {
-                Console.WriteLine("Update failed!");
-            }
-            Console.WriteLine($"{majorsCtrl.Change(updatedMajor)} row updated!");
+            //var updatedMajor = new Major()
+            //{
+            //    Id = 10,
+            //    MinSAT = 1200
+            //};
+
+            //var rowsUpdated = majorsCtrl.Change(updatedMajor);
+            //if (rowsUpdated != 1)
+            //{
+            //    Console.WriteLine("Update failed!");
+            //}
+            //Console.WriteLine($"{majorsCtrl.Change(updatedMajor)} row updated!");
 
             //var newMajor = new Major()
             //{
@@ -35,16 +36,29 @@ namespace CSharp_Sql_Tutorial
             //    MinSAT = 1590
             //};
             //var rowsAffected = majorsCtrl.Create(newMajor);
-            //if(rowsAffected != 1)
+            //if (rowsAffected != 1)
             //{
             //    Console.WriteLine("Create failed!");
             //}
 
-            var major = majorsCtrl.GetByPk(1);
+            var major = majorsCtrl.GetByPk(15);
             Console.WriteLine(major);
-            major = majorsCtrl.GetByPk(11111);
-            Console.WriteLine(major);
+            //major = majorsCtrl.GetByPk(11111);
+            //Console.WriteLine(major);
 
+            major.MinSAT = 1150;
+            major.Code = "UWBW";
+            major.Description = "Basket Weaving - Underwater";
+
+            //var rowsAffected = majorsCtrl.Remove(major.Id);
+            //Console.WriteLine($"{rowsAffected} row deleted!");
+
+            var rowsAffected = majorsCtrl.Change(major);
+            if (rowsAffected != 1)
+            {
+                Console.WriteLine("Update failed!");
+            }
+            Console.WriteLine($"{rowsAffected} row updated!");
 
             var majors = majorsCtrl.GetAll();
             foreach (var maj in majors)
